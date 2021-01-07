@@ -1,0 +1,38 @@
+---
+title: "ESM244 Lab1"
+author: "Hannah Garcia-Wickstrum"
+date: "1/7/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(sf)
+library(tmap)
+library(dplyr)
+```
+
+### Read in SF trees data
+
+```{r}
+sf_trees <- read_csv(here::here("data", "sf_trees", "sf_trees.csv"))
+```
+
+### Basic wrangling reminders
+
+Refresh some skills for data wrangling & summary statistics using functions in the 'dplyr' package. 
+
+Find the top 5 highest observations of trees by legal status, do some wrangling, and make a graph.
+
+```{r}
+top_5_status <- sf_trees %>% 
+  count(legal_status) %>% #count replaces group_by and summarize_n and puts it into a table
+  drop_na(legal_status) %>% 
+  rename(tree_count = n) %>%
+  # relocate(tree_count) # can't get relocate to work
+  slice_max(tree_count, n = 5)
+
+```
+
